@@ -26,7 +26,7 @@ namespace WeatherApp.ViewModels
         private string city;
 
 
-        /// TODO -- : Juste pour vous voyez la nouvelle propriété ici
+        ///  ok - TODO -- : Juste pour vous voyez la nouvelle propriété ici
         /// <summary>
         /// Ville pour effectuer la recherche
         /// </summary>

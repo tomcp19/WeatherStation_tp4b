@@ -13,8 +13,10 @@
             <views:TemperatureView/>
         </DataTemplate>
         <!-- TODO 02 : Ajouter le DataTemplate pour la configuration -->
-        
-        
+        <DataTemplate DataType="{x:Type models:ConfigurationViewModel}">
+            <views:ConfigurationView/>
+        </DataTemplate>
+
         <Style x:Key="allMargins">
             <Setter Property="Control.Margin" Value="3"/>
         </Style>
