@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Windows;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -110,7 +111,21 @@ namespace OpenWeatherAPI
                     OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
                     return result;
                 }
+                else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    
+                    Console.WriteLine("invalid API key");
+                    OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
+                    return result;
 
+                }
+                else if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    //MessageBox.Show("City not found");
+                    Console.WriteLine("City not found");
+                    OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
+                    return result;
+                }
                 return null;
 
             }

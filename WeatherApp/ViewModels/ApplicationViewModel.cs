@@ -75,8 +75,8 @@ namespace WeatherApp.ViewModels
                 else
                 {
                     ows = new OpenWeatherService(Properties.Settings.Default.apiKey);
-                    tvm.RawText = "";
-                }
+                    tvm.City = OpenWeatherProcessor.Instance.City;
+            }
                 
             tvm.SetTemperatureService(ows);
             ViewModels.Add(tvm);
