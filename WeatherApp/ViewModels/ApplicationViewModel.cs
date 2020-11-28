@@ -50,8 +50,8 @@ namespace WeatherApp.ViewModels
             ChangePageCommand = new DelegateCommand<string>(ChangePage);
            
             /// TODO 11 : Commenter cette ligne lorsque la configuration utilisateur fonctionne
-            var apiKey = AppConfiguration.GetValue("OWApiKey");
-            ows = new OpenWeatherService(apiKey);
+            //var apiKey = AppConfiguration.GetValue("OWApiKey");
+            //ows = new OpenWeatherService(apiKey);
 
             initViewModels();
         }
@@ -68,23 +68,15 @@ namespace WeatherApp.ViewModels
            // try
            // {
 
-                if (String.IsNullOrEmpty(Properties.Settings.Default.apiKey))
-                {
-                    MessageBox.Show("La clé d'API n'a pas été ajoutée");
-                    //throw ArgumentException("la clé d'API est vide");
+                if (string.IsNullOrEmpty(Properties.Settings.Default.apiKey))
+                {                  
+                    tvm.RawText="Aucune clé API dans l'application, veuillez l'ajouter dans Fichier - > Préférences";//avait mis messagebox avant... et j'ai relu...
                 }
                 else
                 {
-                //var apiKey = AppConfiguration.GetValue("OWApiKey");
-                ows = new OpenWeatherService(Properties.Settings.Default.apiKey);
+                    ows = new OpenWeatherService(Properties.Settings.Default.apiKey);
+                    tvm.RawText = "";
                 }
-
-            //}
-           // catch (e)
-           // { 
-            
-           // }
-
                 
             tvm.SetTemperatureService(ows);
             ViewModels.Add(tvm);
@@ -102,12 +94,25 @@ namespace WeatherApp.ViewModels
             /// 
             /// Algo
             /// Si la vue actuelle est ConfigurationViewModel
-            ///   Mettre la nouvelle clé dans le OpenWeatherService
-            ///   Rechercher le TemperatureViewModel dans la liste des ViewModels
-            ///   Si le service de temperature est null
-            ///     Assigner le service de température
-            /// 
-           
+            if (CurrentViewModel == ViewModels[1])
+            {
+                ///   Mettre la nouvelle clé dans le OpenWeatherService        
+                ///   Si le service de temperature est null
+                if(ows == null)
+                {
+                   ///     Assigner le service de température
+                   ows = new OpenWeatherService(Properties.Settings.Default.apiKey); // on ne peut pas assigné le service sans la clé
+                   Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    ows.SetApiKey(Properties.Settings.Default.apiKey); //si existant
+                    Properties.Settings.Default.Save();
+                }
+                ///   Rechercher le TemperatureViewModel dans la liste des ViewModels
+                //https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.firstordefault?view=net-5.0
+
+            }
 
             /// Permet de retrouver le ViewModel avec le nom indiqé
             CurrentViewModel = ViewModels.FirstOrDefault(x => x.Name == pageName);  

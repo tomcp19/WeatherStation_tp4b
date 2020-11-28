@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WeatherApp.ViewModels;
 
 namespace WeatherApp.Services
@@ -20,12 +21,25 @@ namespace WeatherApp.Services
         public async Task<TemperatureModel> GetTempAsync()
         {
             var temp = await owp.GetCurrentWeatherAsync();
-
-            var result = new TemperatureModel
+            var result = new TemperatureModel();
+            try 
+            { 
+                if (temp != null)
+                    {
+                        result.DateTime = DateTime.UnixEpoch.AddSeconds(temp.DateTime);
+                        result.Temperature = temp.Main.Temperature;
+                    }
+                else
+                    {
+                    throw new ArgumentException("Clé API invalide");
+                    }
+            }
+            catch(ArgumentException e)
             {
-                DateTime = DateTime.UnixEpoch.AddSeconds(temp.DateTime),
-                Temperature = temp.Main.Temperature
-            };
+                MessageBox.Show("Clé API invalide");
+                Console.WriteLine(e.Message);
+                throw e;
+            }
 
             return result;
         }
