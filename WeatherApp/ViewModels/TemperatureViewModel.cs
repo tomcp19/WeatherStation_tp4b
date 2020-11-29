@@ -82,9 +82,18 @@ namespace WeatherApp.ViewModels
 
         private async Task GetTempAsync()
         {
-            CurrentTemp = await TemperatureService.GetTempAsync();
+            try 
+            { 
+                    CurrentTemp = await TemperatureService.GetTempAsync();
 
-            RawText = $"Time : {CurrentTemp.DateTime.ToLocalTime()} {Environment.NewLine}Temperature : {CurrentTemp.Temperature}";
+                    RawText = $"Time : {CurrentTemp.DateTime.ToLocalTime()} {Environment.NewLine}Temperature : {CurrentTemp.Temperature}";
+            }
+            //error bubbling... 
+            //https://social.technet.microsoft.com/wiki/contents/articles/36836.exception-bubbling-in-c.aspx
+            catch (Exception e)
+            {
+                    RawText = e.Message;
+            }
         }
 
         public double CelsiusInFahrenheit(double c)

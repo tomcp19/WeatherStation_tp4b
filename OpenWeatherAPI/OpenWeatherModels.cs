@@ -76,7 +76,6 @@ namespace OpenWeatherAPI
         [JsonProperty("cod")]
         public long Cod { get; set; }
 
-
     }
 
     public partial class Clouds

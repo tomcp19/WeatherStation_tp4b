@@ -102,12 +102,13 @@ namespace WeatherApp.ViewModels
                 {
                    ///     Assigner le service de température
                    ows = new OpenWeatherService(Properties.Settings.Default.apiKey); // on ne peut pas assigné le service sans la clé
-                   Properties.Settings.Default.Save();
+
+                   //Properties.Settings.Default.Save(); //sert a rien
                 }
                 else
                 {
                     ows.SetApiKey(Properties.Settings.Default.apiKey); //si existant
-                    Properties.Settings.Default.Save();
+                    //Properties.Settings.Default.Save(); //sert a rien
                 }
                 ///   Rechercher le TemperatureViewModel dans la liste des ViewModels
                 //https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.firstordefault?view=net-5.0

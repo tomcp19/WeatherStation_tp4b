@@ -39,14 +39,14 @@ namespace OpenWeatherAPI
             EndPoint = $"/weather?";
         }
 
-        
+
         /// <summary>
         /// Appel le endpoint One Call API
         /// </summary>
         /// <returns></returns>
         public async Task<OpenWeatherOneCallModel> GetOneCallAsync()
         {
-            
+
             EndPoint = $"/onecall?";
 
             /// Src : https://stackoverflow.com/a/14517976/503842
@@ -103,28 +103,28 @@ namespace OpenWeatherAPI
         }
 
         private async Task<OWCurrentWeaterModel> doCurrentWeatherCall()
-        {            
+        {
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(longUrl))
             {
+
                 if (response.IsSuccessStatusCode)
                 {
                     OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
                     return result;
                 }
-                else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                //error bubbling... 
+                //https://social.technet.microsoft.com/wiki/contents/articles/36836.exception-bubbling-in-c.aspx
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    
-                    Console.WriteLine("invalid API key");
-                    OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
-                    return result;
-
+                    throw new Exception("invalid API key");
                 }
-                else if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    //MessageBox.Show("City not found");
-                    Console.WriteLine("City not found");
-                    OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
-                    return result;
+                    throw new Exception("City not found");
+                }
+                else if (String.IsNullOrEmpty(City))
+                {
+                    throw new Exception("Location/City is empty, please enter a City name");
                 }
                 return null;
 
@@ -132,3 +132,4 @@ namespace OpenWeatherAPI
         }
     }
 }
+
