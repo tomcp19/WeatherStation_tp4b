@@ -44,7 +44,7 @@ Section "Uninstall"
 
   RMDir /r "$INSTDIR"
 
-  Delete "$Desktop\${APP_NAME}.lnk"
+  Delete "$Desktop\${APP_NAME} (9867199).lnk"
 
   DeleteRegKey /ifempty HKCU "Software\${APP_NAME}"
 
